@@ -4,9 +4,16 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script type="text/javascript" src="scripts/jquery.min.js"></script>
+		<script type="text/javascript" src="scripts/bootstrap.bundle.min.js"></script>
+		<script type="text/javascript" src="scripts/jsoneditor.min.js"></script>
+		<script type="text/javascript" src="scripts/highlight.min.js"></script>
+		<link rel="stylesheet" href="styles/bootstrap.min.css" />
+		<link rel="stylesheet" href="styles/jsoneditor.min.css" />
+		<link rel="stylesheet" href="styles/highlight.min.css" />
 		%sveltekit.head%
 	</head>
-	<body data-sveltekit-preload-data="hover">
+	<body data-sveltekit-preload-data="hover" class="extension-body">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
