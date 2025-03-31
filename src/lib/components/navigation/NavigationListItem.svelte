@@ -1,23 +1,14 @@
 <script>
 	import { getContext } from 'svelte';
+	import { hideNavigation } from '$lib/scripts/extension/extension-global.svelte.js';
 
 	let { id, landmarkPath = '', landmarkTooltip = '', label = '' } = $props();
 
-    let navLandmarkDetails = getContext('navLandmarkDetails');
+	let navLandmarkDetails = getContext('navLandmarkDetails');
 	const clickHandler = () => {
-        navLandmarkDetails.path = landmarkPath;
-        navLandmarkDetails.tooltip = landmarkTooltip;
-        hideNavigation();
-	};
-
-    const hideNavigation = () => {
-		const offcanvas = document.querySelector('.offcanvas');
-		if (offcanvas) {
-			const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvas);
-			if (offcanvasInstance) {
-				offcanvasInstance.hide();
-			}
-		}
+		navLandmarkDetails.path = landmarkPath;
+		navLandmarkDetails.tooltip = landmarkTooltip;
+		hideNavigation();
 	};
 </script>
 

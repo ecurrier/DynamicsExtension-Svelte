@@ -11,6 +11,8 @@
 	import AdminUtilitiesTab from '$lib/components/tabs/AdminUtilitiesTab.svelte';
 	import DeveloperUtilitiesTab from '$lib/components/tabs/DeveloperUtilitiesTab.svelte';
 
+	import { refreshTooltips } from '$lib/scripts/extension/extension-global.svelte.js';
+
 	let activeTabId = null;
 	const initializeTabId = async () => {
 		const results = await chrome.tabs.query({ currentWindow: true, active: true });
@@ -19,6 +21,8 @@
 
 	onMount(async () => {
 		await initializeTabId();
+
+        refreshTooltips('[data-bs-toggle="tooltip"]');
 	});
 </script>
 

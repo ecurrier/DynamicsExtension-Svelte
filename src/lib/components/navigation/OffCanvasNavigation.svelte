@@ -1,8 +1,10 @@
-<script lang="ts">
-	import { onMount, setContext } from 'svelte';
+<script>
+	import { setContext } from 'svelte';
 	import InfoTooltip from '../icons/InfoTooltip.svelte';
 	import NavigationListItem from './NavigationListItem.svelte';
 	import NavigationListItemDropdown from './NavigationListItemDropdown.svelte';
+
+	import { refreshTooltips } from '$lib/scripts/extension/extension-global.svelte.js';
 
 	let navLandmarkDetails = $state({
 		path: '',
@@ -11,19 +13,9 @@
 
 	setContext('navLandmarkDetails', navLandmarkDetails);
 
-	const refreshTooltips = (selector: string) => {
-		const options = {
-			html: true
-		};
-
-		const tooltipTriggerList = [].slice.call(document.querySelectorAll(selector));
-		tooltipTriggerList.map(function (tooltipTriggerEl) {
-			return new bootstrap.Tooltip(tooltipTriggerEl, options);
-		});
-	};
-
-	onMount(() => {
-		refreshTooltips('[data-bs-toggle="tooltip"]');
+	$effect(() => {
+		navLandmarkDetails.tooltip;
+		refreshTooltips('.nav-landmark-tooltip');
 	});
 </script>
 
@@ -35,6 +27,7 @@
 			data-bs-toggle="offcanvas"
 			data-bs-target="#offcanvasNavbar"
 			aria-controls="offcanvasNavbar"
+			aria-label="Open Navigation"
 		>
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -47,19 +40,7 @@
 					data-bs-placement="top"
 					title={navLandmarkDetails.tooltip}
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="16"
-						height="16"
-						fill="currentColor"
-						class="bi bi-info-circle"
-						viewBox="0 0 16 16"
-					>
-						<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-						<path
-							d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
-						/>
-					</svg>
+					<InfoTooltip />
 				</span>
 			</a>
 		</span>
@@ -97,114 +78,54 @@
 							/>
 						{/snippet}
 					</NavigationListItemDropdown>
-					<li class="nav-item dropdown">
-						<a
-							class="nav-link dropdown-toggle"
-							href="#"
-							id="offcanvas-templates-dropdown"
-							role="button"
-							data-bs-toggle="dropdown"
-							aria-expanded="false"
-						>
-							Templates
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="offcanvas-templates-dropdown">
-							<li>
-								<a
-									class="nav-link"
-									href="#"
-									data-bs-toggle="pill"
-									data-bs-target="#templates-prepopulate-content"
-									data-nav-landmark-path="Templates > Pre-populate"
-									data-nav-landmark-tooltip="Allows the user to generate a template of pre-populated data from an existing record<br><br>The template can then be applied to any record in order to quickly pre-populated a form with specific data"
-									>Pre-populate Forms</a
-								>
-							</li>
-						</ul>
-					</li>
-					<li class="nav-item dropdown">
-						<a
-							class="nav-link dropdown-toggle"
-							href="#"
-							id="offcanvas-webapi-dropdown"
-							role="button"
-							data-bs-toggle="dropdown"
-							aria-expanded="false"
-						>
-							Web API
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="offcanvas-webapi-dropdown">
-							<li>
-								<a
-									class="nav-link"
-									href="#"
-									data-bs-toggle="pill"
-									data-bs-target="#webapi-update-fields-content"
-									data-nav-landmark-path="Web API > Update"
-									data-nav-landmark-tooltip="Allows the user to update any field for a record using the Web API<br><br>To begin, navigate to a record and click Load Attribute Metadata"
-									>Update Fields</a
-								>
-							</li>
-							<li>
-								<a
-									class="nav-link"
-									href="#"
-									data-bs-toggle="pill"
-									data-bs-target="#webapi-retrieve-records-content"
-									data-nav-landmark-path="Web API > Retrieve"
-									data-nav-landmark-tooltip="Allows the user to write and execute Fetch XML queries<br><br>To automatically generate Fetch XML, please navigate to Utilities > Developer"
-									>Retrieve Records</a
-								>
-							</li>
-						</ul>
-					</li>
-					<li class="nav-item">
-						<a
-							class="nav-link"
-							aria-current="page"
-							data-bs-toggle="pill"
-							data-bs-target="#security-content"
-							data-nav-landmark-path="Security Management"
-							data-nav-landmark-tooltip="Allows the user to apply and remove security roles from other system users in the environment<br><br>In order to apply and remove security roles, your user will need the necessary privileges"
-							href="#">Security Management</a
-						>
-					</li>
-					<li class="nav-item dropdown">
-						<a
-							class="nav-link dropdown-toggle"
-							href="#"
-							id="offcanvas-settings-dropdown"
-							role="button"
-							data-bs-toggle="dropdown"
-							aria-expanded="false"
-						>
-							Settings
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="offcanvas-settings-dropdown">
-							<li>
-								<a
-									class="nav-link"
-									href="#"
-									data-bs-toggle="pill"
-									data-bs-target="#settings-environments-content"
-									data-nav-landmark-path="Settings > Environments"
-									data-nav-landmark-tooltip="Allows the user to configure and save environment urls for easy access<br><br>Setting up environments will also enable certain utilities that require a Power Apps Maker Portal url"
-									>Environments</a
-								>
-							</li>
-							<li>
-								<a
-									class="nav-link"
-									href="#"
-									data-bs-toggle="pill"
-									data-bs-target="#settings-extension-settings-content"
-									data-nav-landmark-path="Settings > Extension Settings"
-									data-nav-landmark-tooltip="Configure settings for various utilities used within this extension"
-									>Extension Settings</a
-								>
-							</li>
-						</ul>
-					</li>
+					<NavigationListItemDropdown id="templates" label="Templates">
+						{#snippet listItems()}
+							<NavigationListItem
+								id="templates-prepopulate"
+								landmarkPath="Templates > Pre-populate"
+								landmarkTooltip="Allows the user to generate a template of pre-populated data from an existing record<br><br>The template can then be applied to any record in order to quickly pre-populated a form with specific data"
+								label="Pre-populate Forms"
+							/>
+						{/snippet}
+					</NavigationListItemDropdown>
+					<NavigationListItemDropdown id="webapi" label="Web API">
+						{#snippet listItems()}
+							<NavigationListItem
+								id="webapi-update-fields"
+								landmarkPath="Web API > Update"
+								landmarkTooltip="Allows the user to update any field for a record using the Web API<br><br>To begin, navigate to a record and click Load Attribute Metadata"
+								label="Update Fields"
+							/>
+							<NavigationListItem
+								id="webapi-retrieve-records"
+								landmarkPath="Web API > Retrieve"
+								landmarkTooltip="Allows the user to write and execute Fetch XML queries<br><br>To automatically generate Fetch XML, please navigate to Utilities > Developer"
+								label="Retrieve Records"
+							/>
+						{/snippet}
+					</NavigationListItemDropdown>
+					<NavigationListItem
+						id="security"
+						landmarkPath="Security Management"
+						landmarkTooltip="Allows the user to apply and remove security roles from other system users in the environment<br><br>In order to apply and remove security roles, your user will need the necessary privileges"
+						label="Security Management"
+					/>
+					<NavigationListItemDropdown id="settings" label="Settings">
+						{#snippet listItems()}
+							<NavigationListItem
+								id="settings-environments"
+								landmarkPath="Settings > Environments"
+								landmarkTooltip="Allows the user to configure and save environment urls for easy access<br><br>Setting up environments will also enable certain utilities that require a Power Apps Maker Portal url"
+								label="Environments"
+							/>
+							<NavigationListItem
+								id="settings-extension-settings"
+								landmarkPath="Settings > Extension Settings"
+								landmarkTooltip="Configure settings for various utilities used within this extension"
+								label="Extension Settings"
+							/>
+						{/snippet}
+					</NavigationListItemDropdown>
 				</ul>
 			</div>
 		</div>
