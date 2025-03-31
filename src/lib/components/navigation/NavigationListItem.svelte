@@ -1,12 +1,23 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
+	import { getContext } from 'svelte';
 
 	let { id, landmarkPath = '', landmarkTooltip = '', label = '' } = $props();
 
-	const dispatch = createEventDispatcher();
+    let navLandmarkDetails = getContext('navLandmarkDetails');
+	const clickHandler = () => {
+        navLandmarkDetails.path = landmarkPath;
+        navLandmarkDetails.tooltip = landmarkTooltip;
+        hideNavigation();
+	};
 
-	const hideNavigation = () => {
-		dispatch('hideNavigation');
+    const hideNavigation = () => {
+		const offcanvas = document.querySelector('.offcanvas');
+		if (offcanvas) {
+			const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvas);
+			if (offcanvasInstance) {
+				offcanvasInstance.hide();
+			}
+		}
 	};
 </script>
 
@@ -19,7 +30,7 @@
 		data-nav-landmark-path={landmarkPath}
 		data-nav-landmark-tooltip={landmarkTooltip}
 		href="#"
-		on:click={hideNavigation}
+		on:click={clickHandler}
 		>{label}
 	</a>
 </li>

@@ -1,8 +1,15 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import InfoTooltip from '../icons/InfoTooltip.svelte';
 	import NavigationListItem from './NavigationListItem.svelte';
 	import NavigationListItemDropdown from './NavigationListItemDropdown.svelte';
+
+	let navLandmarkDetails = $state({
+		path: '',
+		tooltip: ''
+	});
+
+	setContext('navLandmarkDetails', navLandmarkDetails);
 
 	const refreshTooltips = (selector: string) => {
 		const options = {
@@ -13,16 +20,6 @@
 		tooltipTriggerList.map(function (tooltipTriggerEl) {
 			return new bootstrap.Tooltip(tooltipTriggerEl, options);
 		});
-	};
-
-	const hideNavigation = () => {
-		const offcanvas = document.querySelector(".offcanvas");
-		if (offcanvas) {
-			const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvas);
-			if (offcanvasInstance) {
-				offcanvasInstance.hide();
-			}
-		}
 	};
 
 	onMount(() => {
@@ -43,8 +40,27 @@
 		</button>
 		<span>
 			<a class="navbar-brand nav-landmark">
-				<span class="nav-landmark-path"></span>
-				<InfoTooltip />
+				<span class="nav-landmark-path">{navLandmarkDetails.path}</span>
+				<span
+					class="nav-landmark-tooltip"
+					data-bs-toggle="tooltip"
+					data-bs-placement="top"
+					title={navLandmarkDetails.tooltip}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						fill="currentColor"
+						class="bi bi-info-circle"
+						viewBox="0 0 16 16"
+					>
+						<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+						<path
+							d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+						/>
+					</svg>
+				</span>
 			</a>
 		</span>
 		<a class="navbar-brand">Power Tools for Power Platform</a>
@@ -72,14 +88,12 @@
 								landmarkPath="Utilities > Admin"
 								landmarkTooltip="Advanced utilities pertaining to administrator functionality<br><br>Hover over individual utilities to see specific descriptions"
 								label="Admin"
-								on:hideNavigation={hideNavigation}
 							/>
 							<NavigationListItem
 								id="utilities-developer"
 								landmarkPath="Utilities > Developer"
 								landmarkTooltip="Advanced utilities pertaining to developer functionality<br><br>Hover over individual utilities to see specific descriptions"
 								label="Developer"
-								on:hideNavigation={hideNavigation}
 							/>
 						{/snippet}
 					</NavigationListItemDropdown>
