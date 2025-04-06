@@ -10,7 +10,7 @@
         "128": "images/powerup-128.png"
     },
     "background": {
-        "service_worker": "__BACKGROUND__",
+        "service_worker": "__BACKGROUND-SERVICE__",
         "type": "module"
     },
     "host_permissions": ["https://*/*"],
@@ -18,7 +18,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["__CONTENT__"]
+            "js": ["__CONTENT-SCRIPT__"]
         }
     ],
     "action": {
@@ -27,7 +27,7 @@
     },
     "web_accessible_resources": [
         {
-            "resources": ["scripts/*"],
+            "resources": ["app/immutable/*"],
             "matches": ["<all_urls>"]
         }
     ],

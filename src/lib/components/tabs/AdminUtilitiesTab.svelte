@@ -1,10 +1,14 @@
 <script>
+	import { setContext } from 'svelte';
 	import TabPane from './TabPane.svelte';
 	import TabPaneButton from './TabPaneButton.svelte';
 	import TabPaneGridRow from './TabPaneGridRow.svelte';
+
+	const category = 'utilities';
+	setContext('category', category);
 </script>
 
-<TabPane id="utilities-admin-content" active={true} category="utilities">
+<TabPane id="utilities-admin-content" active={true}>
 	{#snippet tabPaneContent()}
 		<TabPaneGridRow>
 			{#snippet buttons()}

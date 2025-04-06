@@ -1,11 +1,10 @@
 <script>
-	import { setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import InfoTooltip from '../icons/InfoTooltip.svelte';
 	import NavigationListItem from './NavigationListItem.svelte';
 	import NavigationListItemDropdown from './NavigationListItemDropdown.svelte';
 
-	import { refreshTooltips } from '$lib/scripts/extension/extension-global.svelte.js';
-
+	const extension = getContext('extension');
 	let navLandmarkDetails = $state({
 		path: '',
 		tooltip: ''
@@ -15,7 +14,7 @@
 
 	$effect(() => {
 		navLandmarkDetails.tooltip;
-		refreshTooltips('.nav-landmark-tooltip');
+		extension?.Utility?.refreshTooltips('.nav-landmark-tooltip');
 	});
 </script>
 

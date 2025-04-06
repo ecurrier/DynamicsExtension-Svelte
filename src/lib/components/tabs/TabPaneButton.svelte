@@ -1,5 +1,9 @@
 <script>
 	import OpenInNewTab from '../icons/OpenInNewTab.svelte';
+	import { getContext } from 'svelte';
+
+	const extension = getContext('extension');
+	const category = getContext('category');
 
 	let {
 		functionName = '',
@@ -9,6 +13,14 @@
 		label,
 		openInNewTab = false
 	} = $props();
+
+	const clickHandler = () => {
+		if (functionName) {
+			extension.executeChromeScript(category, functionName);
+		} else if (extensionFunctionName) {
+			// TO-DO: Implement the logic to handle extension function calls
+		}
+	};
 </script>
 
 <div class="col d-grid">
@@ -20,6 +32,7 @@
 		data-bs-toggle="tooltip"
 		data-bs-placement={tooltipPlacement}
 		{title}
+		onclick={clickHandler}
 	>
 		{label}
 		{#if openInNewTab}

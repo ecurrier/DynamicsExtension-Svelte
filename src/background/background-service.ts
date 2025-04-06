@@ -1,4 +1,4 @@
-const AppNamespaces = ['Global', 'Utilities', 'Templates', 'WebAPI', 'Security', 'Settings'];
+const AppNamespaces = ['common', 'utilities'];
 
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
 	if (!AppNamespaces.includes(request.category)) {

@@ -1,14 +1,14 @@
 <script>
 	import { getContext } from 'svelte';
-	import { hideNavigation } from '$lib/scripts/extension/extension-global.svelte.js';
 
+	const extension = getContext('extension');
 	let { id, landmarkPath = '', landmarkTooltip = '', label = '' } = $props();
 
 	let navLandmarkDetails = getContext('navLandmarkDetails');
 	const clickHandler = () => {
 		navLandmarkDetails.path = landmarkPath;
 		navLandmarkDetails.tooltip = landmarkTooltip;
-		hideNavigation();
+		extension.utility.hideNavigation();
 	};
 </script>
 

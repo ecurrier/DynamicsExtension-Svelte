@@ -1,5 +1,8 @@
 <script>
-	let { id, active = false, category = '', tabPaneContent } = $props();
+	import { getContext } from 'svelte';
+	const category = getContext('category');
+
+	let { id, active = false, tabPaneContent } = $props();
 </script>
 
 <div

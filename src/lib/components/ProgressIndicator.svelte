@@ -1,4 +1,20 @@
-<div id="progress-indicator" class="loading-ui full-screen" role="alert">
+<script>
+	let visible = $state(false);
+	let visibleClass = $state('');
+	let message = $state('Loading...');
+
+	$effect(() => {
+		visible;
+		visibleClass = visible ? 'visible' : '';
+	});
+
+	const showLoadingIndicator = (showIndicator = true, indicatorMessage = null) => {
+		showIndicator ? (visible = true) : (visible = false);
+		indicatorMessage ? (message = indicatorMessage) : (message = 'Loading...');
+	};
+</script>
+
+<div id="progress-indicator" class="loading-ui full-screen {visibleClass}" role="alert">
 	<div>
 		<div class="spinner">
 			<svg
@@ -128,6 +144,6 @@
 				</g>
 			</svg>
 		</div>
-		<p id="progress-indicator-message">Loading...</p>
+		<p id="progress-indicator-message">{message}</p>
 	</div>
 </div>

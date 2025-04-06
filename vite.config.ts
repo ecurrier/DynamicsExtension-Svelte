@@ -5,12 +5,13 @@ import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
 export default defineConfig({
-	plugins: [sveltekit(), ManifestRewritePlugin()],
+	plugins: [sveltekit(), manifestRewritePlugin(), contentScriptRewrite()],
 	build: {
 		rollupOptions: {
 			input: {
-				content: resolve(__dirname, 'src/content/index.ts'),
-				background: resolve(__dirname, 'src/background/index.ts')
+				contentScript: resolve(__dirname, 'src/content/content-script.ts'),
+				backgroundService: resolve(__dirname, 'src/background/background-service.ts'),
+				appInject: resolve(__dirname, 'src/inject/app-inject.ts')
 			},
 			output: {
 				entryFileNames: '[name].js'
@@ -19,7 +20,7 @@ export default defineConfig({
 	}
 });
 
-function ManifestRewritePlugin() {
+function manifestRewritePlugin() {
 	return {
 		name: 'manifest-rewrite',
 		apply: 'build',
@@ -31,10 +32,28 @@ function ManifestRewritePlugin() {
 			const getFile = (match: string) => files.find((f) => f.includes(match)) || '';
 
 			manifest = manifest
-				.replace('__BACKGROUND__', getFile('background') || 'background.js')
-				.replace('__CONTENT__', getFile('content') || 'content.js');
+				.replace('__BACKGROUND-SERVICE__', `app/immutable/${getFile('backgroundService')}` || 'backgroundService.js')
+				.replace('__CONTENT-SCRIPT__', `app/immutable/${getFile('contentScript')}` || 'contentScript.js');
 
 			writeFileSync(manifestPath, manifest);
+		}
+	};
+}
+
+function contentScriptRewrite() {
+	return {
+		name: 'content-script-rewrite',
+		apply: 'build',
+		closeBundle() {
+			const files = readdirSync('build/app/immutable');
+			const getFile = (match: string) => files.find((f) => f.includes(match)) || '';
+
+			const contentFilePath = `build/app/immutable/${getFile('content')}`;
+			let contentFile = readFileSync(contentFilePath, 'utf-8');
+
+			contentFile = contentFile.replace('__APP-INJECT__', `app/immutable/${getFile('appInject')}` || 'appInject.js');
+
+			writeFileSync(contentFilePath, contentFile);
 		}
 	};
 }
