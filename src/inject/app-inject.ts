@@ -1,5 +1,6 @@
 import { Common } from './common';
 import { Utilities } from './utilities';
+import { ExtensionMessage } from './types';
 
 const ExtensionNamespaces = ['utilities'];
 

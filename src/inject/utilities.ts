@@ -14,7 +14,7 @@ export class Utilities {
 
 			// Cache selected tab before showing all tabs and sections
 			const selectedTab = this.getSelectedTab();
-			
+
 			this.showTabsAndSections();
 			this.focusAndExpandTab(selectedTab);
 		} catch (error) {
@@ -52,5 +52,34 @@ export class Utilities {
 	private focusAndExpandTab = (tab) => {
 		tab?.setDisplayState?.('expanded');
 		tab?.setFocus?.();
+	};
+
+	toggleControlLogicalNames = () => {
+		const controls = Xrm.Page.getControl();
+		if (!controls || controls.length === 0) {
+			this.common.displayNotification(false, 'Could not find any controls on the form');
+			return;
+		}
+
+		const toggleSchema = controls[0].getLabel() === controls[0].controlDescriptor.Label;
+
+		controls.forEach((control) => {
+			try {
+				const controlName = control.controlDescriptor.Name;
+				const controlLabel = control.controlDescriptor.Label ?? control._defaultLabel ?? null;
+				if (!controlName || !controlLabel) {
+					return;
+				}
+
+				toggleSchema ? control.setLabel(controlName) : control.setLabel(controlLabel);
+			} catch (error) {
+				console.error(error);
+			}
+		});
+
+		this.common.displayNotification(
+			true,
+			`Successfully toggled ${toggleSchema ? 'control labels' : 'logical names'} to display ${toggleSchema ? 'logical names' : 'control labels'}`
+		);
 	};
 }

@@ -8,9 +8,9 @@ export class Common {
 	constructor() {
 		this.constants = new Constants();
 		this.pageContext = window.Xrm
-			? Consants.PageContexts.ModelDrivenApp
+			? Constants.PageContexts.ModelDrivenApp
 			: window.portal
-				? Consants.PageContexts.Portal
+				? Constants.PageContexts.Portal
 				: null;
 		this.sendExtensionMessage('handlePageContext', this.pageContext);
 	}

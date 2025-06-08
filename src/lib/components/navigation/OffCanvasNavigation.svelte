@@ -14,7 +14,7 @@
 
 	$effect(() => {
 		navLandmarkDetails.tooltip;
-		extension?.Utility?.refreshTooltips('.nav-landmark-tooltip');
+		extension?.utility?.refreshTooltips('.nav-landmark-tooltip');
 	});
 </script>
 
