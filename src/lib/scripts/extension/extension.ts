@@ -19,13 +19,12 @@ export class Extension {
 		const results = await chrome.tabs.query({ currentWindow: true, active: true });
 		this.activeTabId = results[0].id;
 	};
-
 	private initializeListener = () => {
-		chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+		chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			if (!request || !request.category || !request.command) {
 				return;
 			}
-
+			
 			addMessage(request.category, request.command, request.data || {});
 		});
 	};
